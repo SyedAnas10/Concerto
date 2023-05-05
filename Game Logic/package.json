@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Console Based version of concerto core logic functions.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "Syed Anas Waseem",
   "license": "ISC"
 }
