@@ -1,0 +1,239 @@
+
+const prompt=require("prompt-sync")();
+const poker=require('poker-hands');
+// var name;
+// name=prompt("enter your name");
+// console.log("name is ",name);
+let suits=['S','D','H','C'];
+let ranks=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+ let deck=[];
+console.log("***Welcome to Concerto*** \n")
+console.log("Conecting to server...")
+let player=[];
+let teamNS=[];
+let teamEW=[];
+let playedCarDeck=[]
+
+for(let i=0;i<4;i++){
+
+    const input = prompt("Plaease enter your  name:");
+    player.push(input);
+}
+console.log("Names of Connected Players ");
+
+
+
+console.log("Press 1 to Display List of Connected Players");
+console.log("Press 2 to Establsih Leader");
+console.log("Press 3 to Deal Cards");
+console.log("Press 4 to exit");
+
+let theDeckIs=createDeck(deck);
+//console.log("The deck is ",theDeckIs);
+
+let shuffleDeck =shuffleMyDeck(deck);
+//console.log("After Shufling the deck is ",result);
+
+
+let choice=prompt('Please enter your choice :');
+if(choice=='1'){
+  connectedPlayersNames(player);
+
+}
+else if(choice=='2'){
+  console.log("*****Establishing The Leader****\n")
+ let leader= establishLeader(player);
+ console.log(`The Leader ${leader} will deal the cards.`)
+}
+else if(choice=='3'){
+
+  let dealtCard=dealCards(shuffleDeck,player);
+ 
+  
+}
+
+else{console.log("INvalid");}
+
+function createDeck(deck)
+{
+
+for(let i=0;i<suits.length;i++)
+{
+    for(let j=0;j<ranks.length;j++)
+     {
+  
+     deck.push(ranks[j]+suits[i]);
+     }
+     
+}
+return deck;
+}
+
+
+function shuffleMyDeck(deck)
+{
+
+    for (let i=0;i<deck.length;i++)
+    {
+
+        var swapCard=deck[i];
+        var randomCard=Math.floor(Math.random()*deck.length);   
+        deck[i]=deck[randomCard];   // swap the orignal index card with the random card
+        deck[randomCard]=swapCard;
+    }
+    return deck;
+}
+
+  function connectedPlayersNames(player)
+  {
+
+    for(let i=0;i<4;i++){
+  
+      console.log("Player ",i+1," :",player[i]);
+    }
+  }
+  
+function establishLeader(player){
+  console.log("*******Establishing the leader********");
+  
+  const randomPlayer = Math.floor(Math.random() * player.length);
+   const establishedLeader=player[randomPlayer];
+
+  return establishedLeader;
+
+
+}
+
+
+
+function dealCards(shuffleDeck, player) {
+  for (let i = 0; i < player.length; i++) {
+    player[i] = new Array(player.length);
+  }
+  let cardIndex = 0;
+  console.log("*******Dealing The Cards********")
+  for (let i = 0; i < player.length; i++) {
+    for (let j = 0; j < 13; j++) { // fix here
+      player[i][j] = shuffleDeck[cardIndex]; // fix here
+      cardIndex++;
+    }
+  }
+  // for (let i = 0; i < player.length; i++) {
+  //   console.log("Player ",i,"Cards are:",player[i]);
+  // }
+  let teamNS = new Array(2);
+  let teamEW = new Array(2);
+  console.log("***Establish The Team ****")
+  
+  const [teamNSResult, teamEWResult] = TeamUP(player,teamNS,teamEW);
+  console.log("Team North South is ",teamNSResult);
+  console.log("*****************************");
+  console.log("Team East West  is ",teamEWResult);
+  
+
+  console.log("*****Played round started among teams****");
+  playRound(playedCarDeck,player)
+  
+}
+
+function TeamUP(player,teamNS,teamEW)
+{
+   teamEW[0]=player[0];
+   teamEW[1]=player[2];
+   teamNS[0]=player[1];
+   teamNS[1]=player[3];
+ 
+   return [teamNS,teamEW];
+
+}
+function playRound(playedCarDeck,player)
+{
+  // for (let i=0;i<5;i++)
+  // {
+  // console.log("Press 1 to Play");
+  // console.log("Press 2 to Pass");
+  // console.log("Press 3 to Force");
+  // let playerChoice=prompt("Please enter your choice");
+  //     let p1=player[0];
+  //     let p2=player[1];
+  // if(playerChoice=='1')
+  // {
+    
+  // let playCardChoice=prompt("Please enter the index of the card");
+     
+  //     if(playedCarDeck.length<5){
+  //    playedCarDeck.push(p1[playedCarDeck])
+  //    p1.splice(playCardChoice,1)
+  //     }
+  //     else{
+  //       console.log("Round Completed For Team");
+  //     }
+  //    console.log("Player south will play ,pass or force");
+
+     console.log("Press 1 to Play");
+     console.log("Press 2 to Pass");
+     console.log("Press 3 to Force");
+     let playerChoice=prompt("Please enter your choice");
+     if(playerChoice==1)
+     {
+      let p=[];
+      p=player[0];
+      console.log("Your cards are ",p);
+      let playCardChoice=prompt("Please enter the index of the card");
+      playedCarDeck.push(p[playCardChoice])
+       p.splice(playCardChoice,1)
+       console.log("Remaing cards are ",p);
+       console.log("round contains this cards",playedCarDeck);
+
+      console.log("2nd player from you team turns")
+      p=player[1];
+      console.log("Your cards are ",p);
+      playCardChoice=prompt("Please enter the index of the card");
+      playedCarDeck.push(p[playCardChoice])
+       p.splice(playCardChoice,1)
+       console.log("Remaing cards are ",p);
+       console.log("round contains this cards",playedCarDeck);
+       p=player[0];
+      console.log("Your cards are ",p);
+      playCardChoice=prompt("Please enter the index of the card");
+      playedCarDeck.push(p[playCardChoice])
+       p.splice(playCardChoice,1)
+       console.log("Remaing cards are ",p);
+       console.log("round contains this cards",playedCarDeck);
+
+      console.log("2nd player from you team turns")
+      p=player[1];
+      console.log("Your cards are ",p);
+      playCardChoice=prompt("Please enter the index of the card");
+      playedCarDeck.push(p[playCardChoice])
+       p.splice(playCardChoice,1)
+       console.log("Remaing cards are ",p);
+       console.log("round contains this cards",playedCarDeck);
+       console.log("last player from you team turns")
+      p=player[1];
+      console.log("Your cards are ",p);
+      playCardChoice=prompt("Please enter the index of the card");
+      playedCarDeck.push(p[playCardChoice])
+       p.splice(playCardChoice,1)
+       console.log("Remaing cards are ",p);
+       console.log("round contains this cards",playedCarDeck);
+     }
+      
+     
+  else{
+    console.log("invalid option");
+  }
+
+
+}
+
+function playACard(teamEW)
+{
+
+  console.log("")
+}
+// console.log("score is "+poker.hasTwoPairs('7H 7S 8C AC 8S'));
+// console.log("score is"+poker.getHandStrength('7H 7S 9C AC 8S'));
+// console.log("score is"+poker.getHandStrength('4H 5S 3C 2D AS'));
+// console.log("score is"+poker.getHandStrength('AD KD QD JD 10D'));//straight flush
+// console.log("score is"+poker.getHandStrength('4S 4C 4H 4D AS')); //fours
