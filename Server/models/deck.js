@@ -2,14 +2,17 @@ const Card = require("./card");
 
 // DECK CLASS
 class Deck {
+
+    suits = ["hearts", "diamonds", "clubs", "spades"];
+    values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+
     constructor() {
         this.cards = [];
-        const suits = ["hearts", "diamonds", "clubs", "spades"];
-        const values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
-        for (let suit of suits) {
-          for (let value of values) {
+        for (let suit of this.suits) {
+          for (let value of this.values) {
             this.cards.push(new Card(suit, value));
         }}
+        this.shuffle()
     }
 
     shuffle() {
@@ -18,6 +21,12 @@ class Deck {
             [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
         }
     }
+
+    draw() {
+        return this.cards.pop()
+    }
+
+    
 }
 
 module.exports = Deck;

@@ -6,3 +6,5 @@ class Team {
         this.leader = this.player1
     }
 }
+
+module.exports = Team
