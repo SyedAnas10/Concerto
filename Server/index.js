@@ -1,6 +1,7 @@
 const express = require('express')
 const Deck = require('./models/deck')
 const Player = require('./models/player')
+const Round = require('./models/round')
 const Team = require('./models/team')
 
 const port = 3000
@@ -26,10 +27,16 @@ for( let i = 0; i < 13; i++) {
     player4.cards.push(newDeck.draw())
 }
 
+// CONSTRUCTING POKER HAND
+const round = new Round(player4, teamNS)
+
+
 app.listen(port, () => {
     console.log(`Concerto Server running on port ${port}`)
-    console.log(`${player1.name} has the following cards : `)
-    for( let i = 0; i < 13; i++) {
-        console.log(player1.cards[i].cardName)
+    
+    for (let i = 0; i < 2; i++) {
+        round.play(player1.cards.pop(), teamNS.player1)
+        round.play(player2.cards.pop(), teamNS.player2)
     }
+    round.play(player1.cards.pop(), teamNS.player1)
 })
