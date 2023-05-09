@@ -26,11 +26,11 @@ class PokerHand {
 
         // CHECK FOR STRAIGHT FLUSH, THE ROYAL FLUSH IS EQUIVALENT TO STRAIGHT FLUSH
         if ( 
-            uniqueValues.length === 5 &&
+            uniqueValues.length === 5 && 
             suits.every(suit => suit === suits[0]) &&
             (
                 Math.max(...values) - Math.min(...values) === 4 ||
-                (values.includes('A') && values.includes('K') && values.includes('Q') && values.includes('J') && values.includes("10")) ||
+                (values.includes('A') && values.includes('K') && values.includes('Q') && values.includes('J') && values.includes('10')) ||
                 (values.includes('A') && values.includes('2') && values.includes('3') && values.includes('4') && values.includes("5"))
             )
         ) {
@@ -46,12 +46,16 @@ class PokerHand {
         }
 
         // CHECK FOR FLUSH
-        else if (suits.every(suit => suit === suits[0])) {
+        else if (uniqueValues.length === 5 && suits.every(suit => suit === suits[0])) {
             this.type = pokerHands.FL
         }
 
         // CHECK FOR STRAIGHT
-        else if (uniqueValues.length === 5 && Math.max(...values) - Math.min(...values) === 4) {
+        else if (uniqueValues.length === 5 && (
+            Math.max(...values) - Math.min(...values) === 4 ||
+            (values.includes('A') && values.includes('K') && values.includes('Q') && values.includes('J') && values.includes('10')) ||
+            (values.includes('A') && values.includes('2') && values.includes('3') && values.includes('4') && values.includes("5"))
+        )) {
             this.type = pokerHands.ST
         }
 
@@ -70,11 +74,13 @@ class PokerHand {
 
         // CHECK FOR FOURS or THREES
         for (let value of uniqueValues) {
-            if (values.filter(v => v === value).length === 4) {
+            if (values.filter(v => v === value).length === 4 && this.type === null) {
                 this.type = pokerHands.F
+                break
             }
-            if (values.filter(v => v === value).length === 3) {
+            else if (values.filter(v => v === value).length === 3 && this.type === null) {
                 this.type = pokerHands.TH
+                break
             }
         }
 

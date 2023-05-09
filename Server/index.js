@@ -1,4 +1,5 @@
 const express = require('express')
+const Deal = require('./models/deal')
 const Deck = require('./models/deck')
 const Player = require('./models/player')
 const Round = require('./models/round')
@@ -28,15 +29,11 @@ for( let i = 0; i < 13; i++) {
 }
 
 // CONSTRUCTING POKER HAND
-const round = new Round(player4, teamNS)
+const deal = new Deal(teamNS, teamEW)
 
 
 app.listen(port, () => {
     console.log(`Concerto Server running on port ${port}`)
     
-    for (let i = 0; i < 2; i++) {
-        round.play(player1.cards.pop(), teamNS.player1)
-        round.play(player2.cards.pop(), teamNS.player2)
-    }
-    round.play(player1.cards.pop(), teamNS.player1)
+    deal.playDeal()
 })
