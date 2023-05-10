@@ -6,6 +6,7 @@ class Round {
         this.team = team
         this.roundNumber = roundNumber
         this.constructedHand = new PokerHand()
+        this.turnOption = null
     }
 
     // COMMENCING THE ROUND OF A DEAL. ONE TEAM PER ROUND
@@ -16,8 +17,28 @@ class Round {
         `)
         await this.selectCard(this.team.leader)
         while( this.constructedHand.hand.length < 5 ) {
-            await this.selectCard(this.team.supporter)
-            await this.selectCard(this.team.leader)
+            console.log(`1.Play   2.Pass`)
+            prompt.start()
+            const {turnOption} = await prompt.get([`Select option for your turn ${this.team.supporter.name}`])
+            this.turnOption = turnOption
+            if (this.turnOption === 1) {
+                console.log(`You have selected option ${this.turnOption}`)
+                await this.selectCard(this.team.supporter)
+            }
+            else {
+                console.log(`${this.team.supporter.name} has Passed its turn.`)
+                prompt.start()
+                const {turnOption} = await prompt.get([`Select option for your turn ${this.team.leader.name}`])
+                this.turnOption = turnOption
+                console.log(`You have selected option ${this.turnOption}`)
+                if (this.turnOption === 1) {
+                    await this.selectCard(this.team.leader)
+                }
+                else {
+                    await this.selectCard(this.team.supporter)
+                }
+            }
+            
         }
         this.team.establishNewLeader()
         return this.constructedHand.score
