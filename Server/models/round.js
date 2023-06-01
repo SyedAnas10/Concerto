@@ -6,6 +6,9 @@ class Round {
         this.team = team
         this.roundNumber = roundNumber
         this.constructedHand = new PokerHand()
+        this.turnOption = null
+        this.passAvailable = true
+        this.passCount = 0
     }
 
     // COMMENCING THE ROUND OF A DEAL. ONE TEAM PER ROUND
@@ -14,12 +17,33 @@ class Round {
         console.log(`
         Round ${this.roundNumber} \n Team ${this.team.teamName} playing with ${this.team.leader.name} as a Leader
         `)
+        let roundLeader = this.team.leader
+        // LEADER WILL ALWAYS PLAY CARD ON THE FIRST TURN
         await this.selectCard(this.team.leader)
-        while( this.constructedHand.hand.length < 5 ) {
-            await this.selectCard(this.team.supporter)
-            await this.selectCard(this.team.leader)
-        }
         this.team.establishNewLeader()
+        // LOOP WHILE A POKER HAND IS NOT COMPLETED
+        while( this.constructedHand.hand.length < 5 ) {
+            console.log(`1.Play   2.Pass`)
+            prompt.start()
+            const {turnOption} = await prompt.get(['turnOption'])
+            this.turnOption = turnOption
+            if (this.turnOption === '1') {
+                await this.selectCard(this.team.leader)
+                this.passCount = 0
+                this.passAvailable = true
+                this.team.establishNewLeader()
+            }
+            else if(this.turnOption === '2') {
+                if (this.passAvailable)
+                    this.pass()
+                else 
+                    console.log(`You can not pass twice. Please select option to play the card.`)
+            }
+            
+        }
+        if (roundLeader === this.team.leader) {
+            this.team.establishNewLeader()
+        }
         return this.constructedHand.score
     }
 
@@ -42,6 +66,17 @@ class Round {
             console.log(`The card in the hands are`)
             this.constructedHand.hand.map(card => console.log(card.card.cardName))
         }
+    }
+
+    pass() {
+        console.log(` ${this.team.leader.name} has passed its turn. ${this.team.supporter.name} please make your choice...`)
+        this.passCount++
+        this.passAvailable = !!(this.passCount !== 2)
+        this.team.establishNewLeader()
+    }
+
+    force() {
+
     }
 
     async selectCard(player) {

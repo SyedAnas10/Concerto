@@ -28,7 +28,7 @@ for( let i = 0; i < 13; i++) {
     player4.cards.push(newDeck.draw())
 }
 
-// CONSTRUCTING POKER HAND
+// COMMENCING DEAL
 const deal = new Deal(teamNS, teamEW)
 
 
