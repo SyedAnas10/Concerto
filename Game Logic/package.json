@@ -1,8 +1,0 @@
-{
-  "name": "concerto-core-logic",
-  "version": "1.0.0",
-  "description": "Console Based version of concerto core logic functions.",
-  "main": "index.js",
-  "author": "Syed Anas Waseem",
-  "license": "ISC"
-}

@@ -1,11 +1,13 @@
 const express = require('express')
+const path = require('path')
+
 const Deal = require('./models/deal')
 const Deck = require('./models/deck')
 const Player = require('./models/player')
 const Round = require('./models/round')
 const Team = require('./models/team')
 
-const port = 3000
+const port = 80
 
 const app = express()
 const newDeck = new Deck()
@@ -30,6 +32,11 @@ for( let i = 0; i < 13; i++) {
 
 // COMMENCING DEAL
 const deal = new Deal(teamNS, teamEW)
+
+app.get('/', (req, res) => {
+    const filePath = path.join(__dirname, 'public', 'index.html');
+    res.sendFile(filePath);
+})
 
 
 app.listen(port, () => {
