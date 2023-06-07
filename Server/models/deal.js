@@ -11,7 +11,7 @@ class Deal {
     }
 
     async playDeal() {
-        for (; this.roundNumber < 2 ; this.roundNumber++) {
+        for (; this.roundNumber < 4 ; this.roundNumber++) {
             const roundNS = new Round(this.team1, this.roundNumber)
             const roundEW = new Round(this.team2, this.roundNumber)
             this.team1Score = this.team1Score + await roundNS.playRound()

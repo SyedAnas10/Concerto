@@ -40,7 +40,7 @@ class Round {
             }
             else if(this.turnOption === '3') {
                 this.team.establishNewLeader()
-                console.log(` ${this.team.supporter} has forced ${this.team.leader} to complete the hand.`)
+                console.log(` ${this.team.supporter.name} has forced ${this.team.leader.name} to complete the hand.`)
                 while (this.constructedHand.hand.length < 5) {
                     await this.selectCard(this.team.leader)
                     if (this.team.leader.cards.length === 0) {
