@@ -97,11 +97,17 @@ function App() {
       )}
       {ready && (
         <div className='App'>
-          {playingTeam === deal.team1 && (
+          {(playingTeam === deal.team1 && roundNumber < 9) && (
             <Round team={deal.team1} playCard={playCard} roundNumber={roundNumber}/>
           )}
-          {playingTeam === deal.team2 && (
+          {(playingTeam === deal.team2 && roundNumber < 9) && (
             <Round team={deal.team2} playCard={playCard} roundNumber={roundNumber}/>
+          )}
+          {roundNumber === 9 && (
+            <div>
+              <h2>Deal Completed!</h2>
+              <h4>Check console to see the scores</h4>
+            </div>
           )}
         </div>
       )}
