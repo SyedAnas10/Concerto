@@ -13,7 +13,6 @@ class Round {
 
     // COMMENCING THE ROUND OF A DEAL. ONE TEAM PER ROUND
     async playRound() {
-        console.clear()
         console.log(`
         Round ${this.roundNumber} \n Team ${this.team.teamName} playing with ${this.team.leader.name} as a Leader
         `)
@@ -23,7 +22,7 @@ class Round {
         this.team.establishNewLeader()
         // LOOP WHILE A POKER HAND IS NOT COMPLETED
         while( this.constructedHand.hand.length < 5 ) {
-            console.log(`1.Play   2.Pass`)
+            console.log(`1.Play   2.Pass   3.Force`)
             prompt.start()
             const {turnOption} = await prompt.get(['turnOption'])
             this.turnOption = turnOption
@@ -38,6 +37,16 @@ class Round {
                     this.pass()
                 else 
                     console.log(`You can not pass twice. Please select option to play the card.`)
+            }
+            else if(this.turnOption === '3') {
+                this.team.establishNewLeader()
+                console.log(` ${this.team.supporter} has forced ${this.team.leader} to complete the hand.`)
+                while (this.constructedHand.hand.length < 5) {
+                    await this.selectCard(this.team.leader)
+                    if (this.team.leader.cards.length === 0) {
+                        this.team.establishNewLeader()
+                    }
+                }
             }
             
         }
