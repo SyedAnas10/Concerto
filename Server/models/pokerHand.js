@@ -19,6 +19,9 @@ class PokerHand {
         this.type = null
     }
 
+    evaluateLeftOverHand() {
+    }
+
     evaluateHand() {
         const values = this.hand.map(card => card.card.value)
         const suits = this.hand.map(card => card.card.suit)
