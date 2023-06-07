@@ -1,11 +1,11 @@
 const express = require('express')
 const path = require('path')
 
-const Deal = require('./models/deal')
-const Deck = require('./models/deck')
-const Player = require('./models/player')
-const Round = require('./models/round')
-const Team = require('./models/team')
+const Deal = require('./frontend/src/models/deal')
+const Deck = require('./frontend/src/models/deck')
+const Player = require('./frontend/src/models/player')
+const Round = require('./frontend/src/models/round')
+const Team = require('./frontend/src/models/team')
 
 const port = 80
 

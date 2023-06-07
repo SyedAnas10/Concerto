@@ -1,7 +1,7 @@
 class Player {
     constructor(name) {
         this.name = name
-        this.id = Math.random().toString(16).slice(2)
+        this.id = Math.random().toString(36).substr(2, 9)
         this.cards = []
     }
 }

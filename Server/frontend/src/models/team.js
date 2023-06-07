@@ -10,6 +10,7 @@ class Team {
     establishNewLeader() {
         this.leader = this.leader === this.player1 ? this.player2 : this.player1
         this.supporter = this.supporter === this.player1 ? this.player2 : this.player1
+        console.log(this.leader, this.supporter)
     }
 }
 
