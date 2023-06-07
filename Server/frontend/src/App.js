@@ -12,10 +12,10 @@ function App() {
   const [ready, setReady] = useState(false);
   const [deal, setDeal] = useState(null);
   const [playingTeam, setPlayingTeam] = useState(null)
+  const [roundNumber, setRoundNumber] = useState(1)
   const constructedHand = new PokerHand()
 
   const playCard = (card, player) => {
-    console.log(card, player)
     constructedHand.hand.push({ card, player})
     if (constructedHand.hand.length === 5) {
       constructedHand.evaluateHand()
@@ -25,6 +25,8 @@ function App() {
           \n The hand constructed by team is ${constructedHand.type} \n
           The score is ${constructedHand.score}
       `)
+      setDealNumber(dealNumber+1)
+      setRoundNumber(roundNumber+1)
     }
     else {
       console.log(`The card in the hands are`, constructedHand)
@@ -74,9 +76,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Player Sign-up</h1>
       {!ready && (
         <div className='App'>
+          <h1>Player Sign-up</h1>
           <PlayerSignup onSignup={handlePlayerSignup} />
           <h2>Player's Pool:</h2>
           <ul>
@@ -95,7 +97,12 @@ function App() {
       )}
       {ready && (
         <div className='App'>
-          <Round team={playingTeam} playCard={playCard}/>
+          {playingTeam === deal.team1 && (
+            <Round team={deal.team1} playCard={playCard} roundNumber={roundNumber}/>
+          )}
+          {playingTeam === deal.team2 && (
+            <Round team={deal.team2} playCard={playCard} roundNumber={roundNumber}/>
+          )}
         </div>
       )}
     </div>

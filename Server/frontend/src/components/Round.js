@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import PokerHand from '../models/pokerHand'
 
-const Round = ({team, playCard}) => {
-    const [roundNumber, setRoundNumber] = useState(1)
+const Round = ({team, playCard, roundNumber}) => {
     const [currentLeader, setCurrentLeader] = useState(team.leader)
-    const roundLeader = team.leader
 
     const play = index => {
         const card = currentLeader.cards[index]
