@@ -12,7 +12,9 @@ function App() {
   const [ready, setReady] = useState(false);
   const [deal, setDeal] = useState(null);
   const [playingTeam, setPlayingTeam] = useState(null)
-  const [roundNumber, setRoundNumber] = useState(1)
+  const [roundNumber, setRoundNumber] = useState(0)
+
+  let dealNumber = JSON.parse(window.localStorage.getItem('dealNumber')) || 0
 
   const [team1score, setteam1score] = useState(0)
   const [team2score, setteam2score] = useState(0)
@@ -20,13 +22,13 @@ function App() {
   const cardList = []
   const constructedHand = new PokerHand()
 
+
   const playCard = (card, player) => {
     cardList.push(card.cardName)
+    window.localStorage.setItem('passCount', 0);
     constructedHand.hand.push({ card, player})
     if (constructedHand.hand.length === 5) {
       constructedHand.evaluateHand()
-      console.log(`The card in the hands are`)
-      constructedHand.hand.map(card => console.log(card.card.cardName))
       console.log(`
           \n The hand constructed by team is ${constructedHand.type} \n
           The score is ${constructedHand.score}
@@ -36,25 +38,29 @@ function App() {
       } else {
         setteam2score(team2score + constructedHand.score)
       }
-      setDealNumber(dealNumber+1)
       setRoundNumber(roundNumber+1)
-    }
-    else {
-      console.log(`The card in the hands are`, constructedHand)
-      constructedHand.hand.map(card => console.log(card.card.cardName))
     }
   }
 
-  const [dealNumber, setDealNumber] = useState(0)
   useEffect(() => {
     if (deal) {
+      console.log(`deal number ${dealNumber}`) 
       if (dealNumber % 2 === 0) {
-        setPlayingTeam(deal.team1)
+        if (roundNumber % 2 === 0) {
+          setPlayingTeam(deal.team1)
+        } else {
+          setPlayingTeam(deal.team2)
+        }
       } else {
-        setPlayingTeam(deal.team2)
+        if (roundNumber % 2 === 0) {
+          setPlayingTeam(deal.team2)
+        } else {
+          setPlayingTeam(deal.team1)
+        }
       }
+      
     }
-  }, [dealNumber])
+  }, [roundNumber, deal, dealNumber])
   
 
   const handlePlayerSignup = async (player) => {
@@ -85,6 +91,21 @@ function App() {
   }
   }
 
+  const startNewDeal = () => {
+    players[0].cards = []
+    players[1].cards = []
+    players[2].cards = []
+    players[3].cards = []
+
+    window.localStorage.setItem('dealNumber', dealNumber+1);
+
+    console.log(`deal number ${dealNumber}`)
+
+    setRoundNumber(0)
+    dealCards(players)
+    setPlayingTeam(dealNumber % 2 === 0 ? deal.team2 : deal.team1)
+  }
+
   return (
     <div className="App">
       {!ready && (
@@ -112,16 +133,27 @@ function App() {
       )}
       {ready && (
         <div className='App'>
-          {(playingTeam === deal.team1 && roundNumber < 9) && (
-            <Round team={deal.team1} playCard={playCard} roundNumber={roundNumber} constructedHand={constructedHand}/>
+          {(playingTeam === deal.team1 && roundNumber < 8) && (
+            <Round 
+              team={deal.team1} 
+              playCard={playCard} 
+              roundNumber={roundNumber+1} 
+              constructedHand={constructedHand}
+            />
           )}
-          {(playingTeam === deal.team2 && roundNumber < 9) && (
-            <Round team={deal.team2} playCard={playCard} roundNumber={roundNumber} constructedHand={constructedHand}/>
+          {(playingTeam === deal.team2 && roundNumber < 8) && (
+            <Round 
+              team={deal.team2} 
+              playCard={playCard} 
+              roundNumber={roundNumber+1} 
+              constructedHand={constructedHand}
+            />
           )}
-          {roundNumber === 9 && (
+          {roundNumber === 8 && (
             <div>
               <h2>Deal Completed!</h2>
               <h4>Check below to see the scores</h4>
+              <button onClick={startNewDeal}> Continue to next deal </button>
             </div>
           )}
           <div>
