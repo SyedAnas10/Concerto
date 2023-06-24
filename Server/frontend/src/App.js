@@ -79,6 +79,7 @@ function App() {
     const deal = new Deal(team1, team2);
     setDeal(deal)
     setPlayingTeam(deal.team1)
+    window.localStorage.setItem('dealNumber', 0);
   }
 
   const dealCards = players => {
@@ -107,27 +108,30 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className='Board'>
       {!ready && (
-        <div className='App'>
+        <div className='Signup'>
           {(players.length !== 4 && (
             <div>
-              <h1>Player Sign-up</h1>
+              <h1 style={{ marginLeft: '10px', fontFamily: 'cursive', letterSpacing: '5px'}}>Player Signup</h1>
               <PlayerSignup onSignup={handlePlayerSignup} />
+              <h2 style={{ fontFamily: 'cursive', textDecorationLine: 'overline'}}>PLAYERS POOL</h2>
+              <ul style={{ listStyle: 'georgian outside url("/non-existent.svg")'}}>
+                {players.map((player) => (
+                  <li style={{ font: 'status-bar', fontFamily: 'cursive', fontSize: '15px'}} key={player.id}>{player.name}</li>
+                ))}
+              </ul>
             </div>
           ))}
-          <h2>Player's Pool:</h2>
-          <ul>
-            {players.map((player) => (
-              <li key={player.id}>{player.name}</li>
-            ))}
-          </ul>
         </div>
       )}
       {(players.length === 4 && !ready) && (
-        <div>
-          <h6>Team North South: {`${deal.team1.player1.name}`} and {`${deal.team1.player2.name}`} </h6>
-          <h6>Team East West: {`${deal.team2.player1.name}`} and {`${deal.team2.player2.name}`} </h6>
+        <div className='TeamBox'>
+          <h3> North South <br />
+            {`${deal.team1.player1.name}`} and {`${deal.team1.player2.name}`} 
+          </h3>
+          <h3>East West <br />
+            {`${deal.team2.player1.name}`} and {`${deal.team2.player2.name}`} </h3>
           <button onClick={() => setReady(true)}>Start Game</button>
         </div>
       )}

@@ -17,15 +17,21 @@ const PlayerSignup = ({ onSignup }) => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSignup()
+    }
+  }
+
   return (
-    <div>
+    <div className='Signup-Input'>
       <input
         type="text"
         placeholder="Enter your name"
         value={name}
         onChange={handleNameChange}
+        onKeyDown={handleKeyDown}
       />
-      <button onClick={handleSignup}>Sign up</button>
     </div>
   );
 }
