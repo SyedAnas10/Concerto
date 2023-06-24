@@ -13,9 +13,15 @@ function App() {
   const [deal, setDeal] = useState(null);
   const [playingTeam, setPlayingTeam] = useState(null)
   const [roundNumber, setRoundNumber] = useState(1)
+
+  const [team1score, setteam1score] = useState(0)
+  const [team2score, setteam2score] = useState(0)
+
+  const cardList = []
   const constructedHand = new PokerHand()
 
   const playCard = (card, player) => {
+    cardList.push(card.cardName)
     constructedHand.hand.push({ card, player})
     if (constructedHand.hand.length === 5) {
       constructedHand.evaluateHand()
@@ -25,6 +31,11 @@ function App() {
           \n The hand constructed by team is ${constructedHand.type} \n
           The score is ${constructedHand.score}
       `)
+      if(playingTeam === deal.team1) {
+        setteam1score(team1score + constructedHand.score)
+      } else {
+        setteam2score(team2score + constructedHand.score)
+      }
       setDealNumber(dealNumber+1)
       setRoundNumber(roundNumber+1)
     }
@@ -78,8 +89,12 @@ function App() {
     <div className="App">
       {!ready && (
         <div className='App'>
-          <h1>Player Sign-up</h1>
-          <PlayerSignup onSignup={handlePlayerSignup} />
+          {(players.length !== 4 && (
+            <div>
+              <h1>Player Sign-up</h1>
+              <PlayerSignup onSignup={handlePlayerSignup} />
+            </div>
+          ))}
           <h2>Player's Pool:</h2>
           <ul>
             {players.map((player) => (
@@ -98,17 +113,23 @@ function App() {
       {ready && (
         <div className='App'>
           {(playingTeam === deal.team1 && roundNumber < 9) && (
-            <Round team={deal.team1} playCard={playCard} roundNumber={roundNumber}/>
+            <Round team={deal.team1} playCard={playCard} roundNumber={roundNumber} constructedHand={constructedHand}/>
           )}
           {(playingTeam === deal.team2 && roundNumber < 9) && (
-            <Round team={deal.team2} playCard={playCard} roundNumber={roundNumber}/>
+            <Round team={deal.team2} playCard={playCard} roundNumber={roundNumber} constructedHand={constructedHand}/>
           )}
           {roundNumber === 9 && (
             <div>
               <h2>Deal Completed!</h2>
-              <h4>Check console to see the scores</h4>
+              <h4>Check below to see the scores</h4>
             </div>
           )}
+          <div>
+            <h4> Team North South Score </h4>
+            <p> {team1score} </p>
+            <h4> Team East West Score </h4>
+            <p> {team2score} </p>
+          </div>
         </div>
       )}
     </div>

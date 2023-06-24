@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PokerHand from '../models/pokerHand'
 
-const Round = ({team, playCard, roundNumber}) => {
+const Round = ({team, playCard, roundNumber, constructedHand}) => {
     const [currentLeader, setCurrentLeader] = useState(team.leader)
     const roundLeader = team.leader
 
@@ -22,7 +22,13 @@ const Round = ({team, playCard, roundNumber}) => {
                 {currentLeader.cards.map((card, index) => (
                 <button style={{marginLeft: 5}} onClick={() => play(index)}>{card.cardName}</button>
                 ))}
-          </ul>
+            </ul>
+            <h3> Constructed Hand </h3>
+            <ul>
+                {constructedHand.hand.map(card => (
+                    <li> {card.card.cardName} </li>
+                ))}
+            </ul>
         </div>
     )
 }
