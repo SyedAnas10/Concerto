@@ -5,6 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+window.localStorage.setItem('passCount', 0);
+
+window.localStorage.setItem('dealNumber', 0);
+
 root.render(
   <React.StrictMode>
     <App />

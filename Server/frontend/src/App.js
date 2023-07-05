@@ -8,6 +8,10 @@ import Deck from './models/deck';
 import PokerHand from './models/pokerHand';
 
 function App() {
+
+  const [gameCompleted, setGameComplete] = useState(false)
+  const [gameWinner, setGameWinner] = useState(null)
+
   const [players, setPlayers] = useState([]);
   const [ready, setReady] = useState(false);
   const [deal, setDeal] = useState(null);
@@ -19,24 +23,28 @@ function App() {
   const [team1score, setteam1score] = useState(0)
   const [team2score, setteam2score] = useState(0)
 
+  const [team1Hand, setTeam1Hand] = useState(null)
+  const [team2Hand, setTeam2Hand] = useState(null)
+
   const cardList = []
   const constructedHand = new PokerHand()
 
 
-  const playCard = (card, player) => {
+  const playCard = (card, player, forced) => {
     cardList.push(card.cardName)
-    window.localStorage.setItem('passCount', 0);
+    if (!forced) {
+      window.localStorage.setItem('passCount', 0);
+    }
     constructedHand.hand.push({ card, player})
     if (constructedHand.hand.length === 5) {
       constructedHand.evaluateHand()
-      console.log(`
-          \n The hand constructed by team is ${constructedHand.type} \n
-          The score is ${constructedHand.score}
-      `)
+      window.localStorage.setItem('passCount', 0);
       if(playingTeam === deal.team1) {
         setteam1score(team1score + constructedHand.score)
+        setTeam1Hand(constructedHand.type)
       } else {
         setteam2score(team2score + constructedHand.score)
+        setTeam2Hand(constructedHand.type)
       }
       setRoundNumber(roundNumber+1)
     }
@@ -98,13 +106,26 @@ function App() {
     players[2].cards = []
     players[3].cards = []
 
-    window.localStorage.setItem('dealNumber', dealNumber+1);
+    if (dealNumber === 4 ) {
+      setGameComplete(true)
+      if (team1score > team2score) {
+        setGameWinner(deal.team1)
+      } else {
+        setGameWinner(deal.team2)
+      }
+    } else {
+      window.localStorage.setItem('dealNumber', dealNumber+1);
+  
+      setTeam1Hand(null)
+      setTeam2Hand(null)
+      setRoundNumber(0)
+      dealCards(players)
+      setPlayingTeam(dealNumber % 2 === 0 ? deal.team2 : deal.team1)
+    }
+  }
 
-    console.log(`deal number ${dealNumber}`)
-
-    setRoundNumber(0)
-    dealCards(players)
-    setPlayingTeam(dealNumber % 2 === 0 ? deal.team2 : deal.team1)
+  const startNewGame = () => {
+    window.location.reload()
   }
 
   return (
@@ -131,11 +152,12 @@ function App() {
             {`${deal.team1.player1.name}`} and {`${deal.team1.player2.name}`} 
           </h3>
           <h3>East West <br />
-            {`${deal.team2.player1.name}`} and {`${deal.team2.player2.name}`} </h3>
+            {`${deal.team2.player1.name}`} and {`${deal.team2.player2.name}`} 
+          </h3>
           <button onClick={() => setReady(true)}>Start Game</button>
         </div>
       )}
-      {ready && (
+      {ready && !gameCompleted && (
         <div className='App'>
           {(playingTeam === deal.team1 && roundNumber < 8) && (
             <Round 
@@ -156,16 +178,24 @@ function App() {
           {roundNumber === 8 && (
             <div>
               <h2>Deal Completed!</h2>
-              <h4>Check below to see the scores</h4>
-              <button onClick={startNewDeal}> Continue to next deal </button>
+              <button onClick={startNewDeal} className='continueButton'> Continue </button>
             </div>
           )}
-          <div>
-            <h4> Team North South Score </h4>
-            <p> {team1score} </p>
-            <h4> Team East West Score </h4>
-            <p> {team2score} </p>
+          <div style={{ display: 'flex', flexDirection: 'column'}}>
+            <div style={{marginLeft: 'auto'}}>
+              <h2> SCORE </h2>
+              <h4> North South : {team1score} ({team1Hand || `none`}) </h4>
+              <h4> East West : {team2score} ({team2Hand || `none`})</h4>
+            </div>
           </div>
+        </div>
+      )}
+      {gameCompleted && (
+        <div>
+          <h2> Game Completed </h2>
+          <h3> Winners </h3>
+          <h1> Team {gameWinner.teamName} </h1>
+          <button onClick={startNewGame} className='continueButton'> Play Again! </button>
         </div>
       )}
     </div>

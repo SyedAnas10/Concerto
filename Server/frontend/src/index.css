@@ -12,6 +12,12 @@ code {
     monospace;
 }
 
+.App {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 20px;
+}
+
 .Board {
   display: flex;
   min-height: 100vh;
@@ -53,5 +59,92 @@ code {
 
 .Signup-Input input:focus {
   outline: none;
+}
+
+.optionButton {
+  background: #ffffff;
+  border-radius: 999px;
+  box-shadow: #b4b4bf 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 3px 15px;
+  border: 0;
+}
+
+.disabledOptionButton {
+  background: #646464;
+  border-radius: 999px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: not-allowed;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 0.7;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  border: 0;
+}
+
+
+/* CSS */
+.cardButton {
+  background-color: #fff000;
+  border-radius: 12px;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 10px 15px;
+  text-align: center;
+  transition: 200ms;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 13px;
+  margin: 4px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.cardButton:hover {
+  outline: 0;
+  background: #dbd336;
+  box-shadow: 0 0 0 2px rgba(0,0,0,.2), 0 3px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.continueButton {
+  background-color: #111827;
+  border: 1px solid transparent;
+  border-radius: .75rem;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  padding: .75rem 1.2rem;
+  text-align: center;
+  text-decoration: none #6B7280 solid;
+  text-decoration-thickness: auto;
+  transition-duration: .2s;
+  transition-property: background-color,border-color,color,fill,stroke;
+  transition-timing-function: cubic-bezier(.4, 0, 0.2, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: auto;
+  margin-left: 1px;
+}
+
+.continueButton:hover {
+  background-color: #374151;
 }
 
