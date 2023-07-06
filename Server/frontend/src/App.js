@@ -6,6 +6,7 @@ import Deal from './models/deal';
 import Round from './components/Round';
 import Deck from './models/deck';
 import PokerHand from './models/pokerHand';
+import Modal from './components/DealtCardsModal';
 
 function App() {
 
@@ -26,12 +27,15 @@ function App() {
   const [team1Hand, setTeam1Hand] = useState(null)
   const [team2Hand, setTeam2Hand] = useState(null)
 
+  const [showModal, setShowModal] = useState(false)
+
   const cardList = []
   const constructedHand = new PokerHand()
 
 
   const playCard = (card, player, forced) => {
     cardList.push(card.cardName)
+    console.log(cardList)
     if (!forced) {
       window.localStorage.setItem('passCount', 0);
     }
@@ -158,7 +162,7 @@ function App() {
         </div>
       )}
       {ready && !gameCompleted && (
-        <div className='App'>
+        <div className='App'> 
           {(playingTeam === deal.team1 && roundNumber < 8) && (
             <Round 
               team={deal.team1} 
